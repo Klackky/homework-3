@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { addModel } from './actions/addModel'
+import ModelDetails from './components/modelDetails'
 import './App.css';
 
 const data = {
@@ -30,31 +31,30 @@ class App extends Component {
   state = { computer: null };
 
   updateSelection = (event) => {
-    const select = event.currentTarget;
-    const selectedOption = select.options[select.selectedIndex].value;
     this.setState({
-      computer: selectedOption
+      computer: event.currentTarget.value
     })
   }
 
   addANewModel = () => {
-   Object.keys(data).map(computer => {
-    if(this.state.computer === computer) {
-      this.props.addModel(computer, data[computer].year, data[computer].origin)
-   }
-  })
+    Object.keys(data).map(computer => {
+      if(this.state.computer === computer) {
+        this.props.addModel(computer,data[computer].manufacturer, data[computer].year, data[computer].origin)
+      }
+    })
   }
 
   render() {
     return (
       <div className="App">
-      <select onChange={this.updateSelection}>
-       <option value="">-- pick a model --</option>
+        <ModelDetails computers={this.props.computers}/>
+        <select onChange={this.updateSelection}>
+          <option value="">-- pick a model --</option>
             {Object.keys(data).map(computer => 
-              <option value={computer}>{computer} ({data[computer].year})</option>
+              <option key={computer} value={computer}>{computer} ({data[computer].year})</option>
             )} 
-      </select>
-      <button type="button"onClick={this.addANewModel}> add </button>
+        </select>
+        <button type="button"onClick={this.addANewModel}> add </button>
       </div>
     );
   }
@@ -64,7 +64,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    computer: state
+    computers: state
   }
 }
 

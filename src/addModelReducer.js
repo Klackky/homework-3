@@ -1,4 +1,4 @@
-import {ADD_MODEL} from '../actions/addModel.js';
+import {ADD_MODEL} from './actions/addModel.js';
 
 const reducer = (state = [], action = {}) => {
   switch (action.type) {
