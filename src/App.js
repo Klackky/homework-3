@@ -25,15 +25,24 @@ const data = {
 }
 
 class App extends Component {
+  state = { car: null };
+  
+  updateSelection = (event) => {
+    const select = event.currentTarget;
+    const selectedOption = select.options[select.selectedIndex].value;
+    this.setState({
+      car: selectedOption
+    })
+  }
+
   render() {
     return (
       <div className="App">
-      <select>
+      <select onChange={this.updateSelection}>
        <option value="">-- pick a model --</option>
-       {Object.keys(data).map(car => 
-             <option value={car}>{car} ({data[car].year})</option>
-       )} 
-      }
+            {Object.keys(data).map(car => 
+              <option value={car}>{car} ({data[car].year})</option>
+            )} 
       </select>
       </div>
     );
