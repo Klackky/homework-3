@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import { addModel } from './actions/addModel'
 import './App.css';
 
 const data = {
@@ -25,14 +27,22 @@ const data = {
 }
 
 class App extends Component {
-  state = { car: null };
-  
+  state = { computer: null };
+
   updateSelection = (event) => {
     const select = event.currentTarget;
     const selectedOption = select.options[select.selectedIndex].value;
     this.setState({
-      car: selectedOption
+      computer: selectedOption
     })
+  }
+
+  addANewModel = () => {
+   Object.keys(data).map(computer => {
+    if(this.state.computer === computer) {
+      this.props.addModel(computer, data[computer].year, data[computer].origin)
+   }
+  })
   }
 
   render() {
@@ -40,13 +50,23 @@ class App extends Component {
       <div className="App">
       <select onChange={this.updateSelection}>
        <option value="">-- pick a model --</option>
-            {Object.keys(data).map(car => 
-              <option value={car}>{car} ({data[car].year})</option>
+            {Object.keys(data).map(computer => 
+              <option value={computer}>{computer} ({data[computer].year})</option>
             )} 
       </select>
+      <button type="button"onClick={this.addANewModel}> add </button>
       </div>
     );
   }
+
+
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    computer: state
+  }
+}
+
+
+export default connect(mapStateToProps, {addModel})(App);
